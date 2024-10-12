@@ -23,6 +23,7 @@ import com.example.demo.service.CharacterService;
 import com.example.demo.service.JwtService;
 import com.example.demo.service.MyUserDetailService;
 
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -35,21 +36,25 @@ public class CharacterController {
 	@Autowired
 	JwtService jwtService;
 	
+	@RateLimiter(name = "default")
 	@GetMapping
 	public ResponseEntity<List<CharacterClass>> getAllCharacters(){
 		return new ResponseEntity<>(charService.getAllChracters(),HttpStatus.OK);
 	}
 	
+	@RateLimiter(name = "default")
 	@PostMapping("{id}")
 	public ResponseEntity<CharacterClass> addCharacter(@RequestBody CharacterClass characterClass,@PathVariable int id){
 		return new ResponseEntity<CharacterClass>(charService.addChar(characterClass,id),HttpStatus.OK);
 	}
 	
+	@RateLimiter(name = "default")
 	@GetMapping("{id}")
 	public ResponseEntity<CharacterClass> getCharacter(@PathVariable int id){
 		return new ResponseEntity<CharacterClass>(charService.getCharacters(id),HttpStatus.OK);
 	}
 	
+	@RateLimiter(name = "default")
 	@DeleteMapping("{id}")
 	public ResponseEntity<String> deleteChar(@PathVariable int id){
 		return new ResponseEntity<String>(charService.deleteChar(id),HttpStatus.OK);

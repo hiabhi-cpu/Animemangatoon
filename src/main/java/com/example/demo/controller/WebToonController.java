@@ -20,6 +20,8 @@ import com.example.demo.model.WebToon;
 import com.example.demo.model.WebToonReponse;
 import com.example.demo.service.WebToonService;
 
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+
 @RestController
 @RequestMapping("webtoons")
 public class WebToonController {
@@ -27,22 +29,26 @@ public class WebToonController {
 	@Autowired
 	WebToonService webService;
 	
+	@RateLimiter(name = "default")
 	@GetMapping
 	public ResponseEntity<List<WebToonReponse>> getallWebToon(){
 		return new ResponseEntity<>(webService.getallWebtoon(),HttpStatus.OK);
 	}
 	
+	@RateLimiter(name = "default")
 	@PostMapping
 	public ResponseEntity<WebToon> addWebToon(@RequestBody WebToon webToon){
 		
 		return new ResponseEntity<WebToon>(webService.addWebToon(webToon),HttpStatus.OK);
 	}
 	
+	@RateLimiter(name = "default")
 	@GetMapping("{id}")
 	public ResponseEntity<WebToonReponse> getWebToon(@PathVariable int id){
 		return new ResponseEntity<>(webService.getWebtoon(id),HttpStatus.OK);
 	}
 	
+	@RateLimiter(name = "default")
 	@DeleteMapping("{id}")
 	public ResponseEntity<String> deleteWebtoon(@PathVariable int id){
 		return new ResponseEntity<String>(webService.deleteWebtoon(id),HttpStatus.OK);

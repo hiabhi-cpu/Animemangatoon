@@ -14,6 +14,8 @@ import com.example.demo.model.UserClass;
 import com.example.demo.service.JwtService;
 import com.example.demo.service.UserService;
 
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+
 @CrossOrigin
 @RestController
 @RequestMapping("user")
@@ -27,11 +29,13 @@ public class UserController {
 	@Autowired
 	AuthenticationManager authenticationManager;
 	
+	@RateLimiter(name = "default")
 	@PostMapping("add")
 	public UserClass register(@RequestBody UserClass user) {
 		return userService.saveUser(user);
 	}
 	
+	@RateLimiter(name = "default")
 	@PostMapping("login")
 	public String login(@RequestBody UserClass user) {
 		Authentication authentication=authenticationManager
